@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GetHomePage;
+use App\Http\Controllers\GetSubCategories;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,11 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', GetHomePage::class);
+Route::get('/', GetHomePage::class)->name('home');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/sub-categories/{category}', GetSubCategories::class)->name('sub-categories.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
