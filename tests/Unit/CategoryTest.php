@@ -26,4 +26,19 @@ class CategoryTest extends TestCase
 
         $this->assertEquals(str($name)->slug(), $category->slug);
     }
+
+    public function test_category_has_sub_categories()
+    {
+        $category = Category::factory()->create(['category_id' => null]);
+
+        $this->assertNotNull($category->sub_categories);
+
+        $category->sub_categories()->create(Category::factory()->raw([
+            'category_id' => $category->id,
+        ]));
+
+        $category->refresh();
+
+        $this->assertCount(1, $category->sub_categories);
+    }
 }
