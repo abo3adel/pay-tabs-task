@@ -52,4 +52,17 @@ class CategoryTest extends TestCase
 
         $this->assertEquals($category->parent->name, $parent->name);
     }
+
+    public function test_category_has_many_levels_of_sub_categories()
+    {
+        $parent = Category::factory()->create(['category_id' => null]);
+        $this->assertNull($parent->parent);
+
+        $subCategory = Category::factory()->create(['category_id' => $parent->id]);
+        $this->assertEquals($subCategory->parent->name, $parent->name);
+
+        $subSubCategory = Category::factory()->create(['category_id' => $subCategory->id]);
+        $this->assertEquals($subSubCategory->parent->name, $subCategory->name);
+        $this->assertEquals($subSubCategory->parent->parent->name, $subCategory->parent->name);
+    }
 }
